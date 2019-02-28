@@ -1,0 +1,8 @@
+__pycache__/
+.direnv/
+node_modules/
+.envrc
+*.sqlite3
+now.json
+README.md
+yarn.lock

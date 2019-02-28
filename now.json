@@ -1,0 +1,9 @@
+{
+    "version": 2,
+    "name": "now-django-example",
+    "builds": [{
+        "src": "index.py",
+        "use": "@ardent-labs/now-python-wsgi",
+        "config": { "maxLambdaSize": "15mb" }
+    }]
+}
