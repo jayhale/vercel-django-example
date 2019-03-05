@@ -118,13 +118,19 @@ This configuration sets up a few things:
 3. `"config": { "maxLambdaSize": "15mb" }` ups the limit on the size of the code blob passed to
    lambda (Django is pretty beefy)
 
+Add django to requirements.txt
+```
+# requirements.txt
+django==2.1.7
+```
+
 
 #### Update your Django settings
 
 First, update allowed hosts in `settings.py` to include `now.sh`:
 ```python
 # settings.py
-ALLOWED_HOSTS = ['*.now.sh']
+ALLOWED_HOSTS = ['.now.sh']
 ```
 
 Second, get rid of your database configuration since many of the libraries django may attempt to
