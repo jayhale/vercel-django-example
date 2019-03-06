@@ -118,16 +118,20 @@ This configuration sets up a few things:
 3. `"config": { "maxLambdaSize": "15mb" }` ups the limit on the size of the code blob passed to
    lambda (Django is pretty beefy)
 
-Add django to requirements.txt
+
+#### Add Django to requirements.txt
+
+The `now-python-wsgi` builder will look for a `requirements.txt` file and will
+install any dependencies found there, so we need to add one to the project:
 ```
 # requirements.txt
-django==2.1.7
+Django==2.1.7
 ```
 
 
 #### Update your Django settings
 
-First, update allowed hosts in `settings.py` to include `now.sh`:
+First, update allowed hosts in `settings.py` to include `*.now.sh`:
 ```python
 # settings.py
 ALLOWED_HOSTS = ['.now.sh']
