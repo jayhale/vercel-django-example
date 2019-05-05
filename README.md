@@ -92,31 +92,32 @@ $ python manage.py runserver
 
 #### Add the Now configuration file
 
-Create a new file `index.py` to act as your application entrypoint for Now. The file should import
-the WSGI application you want to use and make it available as `application`:
-```python
-# index.py
-from now_app.wsgi import application
-```
-
 Create a new file `now.json` and add the code below to it:
 ```json
 {
     "version": 2,
     "name": "python-wsgi-example",
     "builds": [{
-        "src": "index.py",
-        "use": "@ardent-labs/now-python-wsgi",
+        "src": "now_app/wsgi.py",
+        "use": "@ardnt/now-python-wsgi",
         "config": { "maxLambdaSize": "15mb" }
-    }]
+    }],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "now_app/wsgi.py"
+        }
+    ]
 }
 ```
 This configuration sets up a few things:
-1. `"src": "index.py"` tells Now that `index.py` is the only application entrypoint to build
-2. `"use": "@ardent-labs/now-python-wsgi"` tells Now to use the `now-python-wsgi` builder (you can
-   read more about the builder at https://github.com/ardent-co/now-python-wsgi)
+1. `"src": "now_app/wsgi.py"` tells Now that `wsgi.py` contains a WSGI application
+2. `"use": "@ardnt/now-python-wsgi"` tells Now to use the `now-python-wsgi` builder (you can
+   read more about the builder at https://github.com/ardnt/now-python-wsgi)
 3. `"config": { "maxLambdaSize": "15mb" }` ups the limit on the size of the code blob passed to
    lambda (Django is pretty beefy)
+4. `"routes": [ ... ]` tells Now to redirect all requests (`"src": "/(.*)"`) to our WSGI
+   application (`"dest": "now_app/wsgi.py"`)
 
 
 #### Add Django to requirements.txt
@@ -131,7 +132,7 @@ Django==2.1.7
 
 #### Update your Django settings
 
-First, update allowed hosts in `settings.py` to include `*.now.sh`:
+First, update allowed hosts in `settings.py` to include `.now.sh`:
 ```python
 # settings.py
 ALLOWED_HOSTS = ['.now.sh']

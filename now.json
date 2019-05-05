@@ -3,7 +3,13 @@
     "name": "now-django-example",
     "builds": [{
         "src": "index.py",
-        "use": "@ardent-labs/now-python-wsgi",
+        "use": "@ardnt/now-python-wsgi",
         "config": { "maxLambdaSize": "15mb" }
-    }]
+    }],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "now_app/wsgi.py"
+        }
+    ]
 }
