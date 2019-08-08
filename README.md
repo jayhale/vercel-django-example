@@ -96,7 +96,7 @@ Create a new file `now.json` and add the code below to it:
 ```json
 {
     "version": 2,
-    "name": "python-wsgi-example",
+    "name": "now-django-example",
     "builds": [{
         "src": "now_app/wsgi.py",
         "use": "@ardnt/now-python-wsgi",
@@ -126,7 +126,7 @@ The `now-python-wsgi` builder will look for a `requirements.txt` file and will
 install any dependencies found there, so we need to add one to the project:
 ```
 # requirements.txt
-Django==2.1.7
+Django==2.2.4
 ```
 
 
@@ -157,4 +157,4 @@ $ now
 > Success! Deployment ready [57s]
 ```
 
-Check your results by visiting https://zeit.co/dashboard/project/python-wsgi-example
+Check your results by visiting https://zeit.co/dashboard/project/now-django-example

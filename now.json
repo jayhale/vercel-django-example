@@ -2,7 +2,7 @@
     "version": 2,
     "name": "now-django-example",
     "builds": [{
-        "src": "index.py",
+        "src": "now_app/wsgi.py",
         "use": "@ardnt/now-python-wsgi",
         "config": { "maxLambdaSize": "15mb" }
     }],
