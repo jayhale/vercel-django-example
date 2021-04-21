@@ -3,6 +3,6 @@ __pycache__/
 node_modules/
 .envrc
 *.sqlite3
-now.json
+vercel.json
 README.md
 yarn.lock

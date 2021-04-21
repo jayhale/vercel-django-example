@@ -1,4 +1,4 @@
-# Django running on Zeit Now
+# Django running on Vercel
 
 
 ## Tutorial
@@ -7,10 +7,10 @@
 ### Install Django
 
 ```
-$ mkdir now-django-example
-$ cd now-django-example
+$ mkdir vercel-django-example
+$ cd vercel-django-example
 $ pip install Django
-$ django-admin startproject now_app .
+$ django-admin startproject vercel_app .
 ```
 
 ### Add an app
@@ -19,18 +19,18 @@ $ django-admin startproject now_app .
 $ python manage.py startapp example
 ```
 
-Add the new app to your application settings (`now_app/settings.py`):
+Add the new app to your application settings (`vercel_app/settings.py`):
 ```python
-# settings.py
+# vercel_app/settings.py
 INSTALLED_APPS = [
     # ...
     'example',
 ]
 ```
 
-Be sure to also include your new app URLs in your project URLs file (`now_app/urls.py`):
+Be sure to also include your new app URLs in your project URLs file (`vercel_app/urls.py`):
 ```python
-# now_app/urls.py
+# vercel_app/urls.py
 from django.urls import path, include
 
 urlpatterns = [
@@ -55,7 +55,7 @@ def index(request):
     html = f'''
     <html>
         <body>
-            <h1>Hello from Zeit Now!</h1>
+            <h1>Hello from Vercel!</h1>
             <p>The current time is { now }.</p>
         </body>
     </html>
@@ -92,37 +92,35 @@ $ python manage.py runserver
 
 #### Add the Now configuration file
 
-Create a new file `now.json` and add the code below to it:
+Create a new file `vercel.json` and add the code below to it:
 ```json
 {
-    "version": 2,
-    "name": "now-django-example",
     "builds": [{
-        "src": "now_app/wsgi.py",
-        "use": "@ardnt/now-python-wsgi",
+        "src": "vercel_app/wsgi.py",
+        "use": "@ardnt/vercel-python-wsgi",
         "config": { "maxLambdaSize": "15mb" }
     }],
     "routes": [
         {
             "src": "/(.*)",
-            "dest": "now_app/wsgi.py"
+            "dest": "vercel_app/wsgi.py"
         }
     ]
 }
 ```
 This configuration sets up a few things:
-1. `"src": "now_app/wsgi.py"` tells Now that `wsgi.py` contains a WSGI application
-2. `"use": "@ardnt/now-python-wsgi"` tells Now to use the `now-python-wsgi` builder (you can
-   read more about the builder at https://github.com/ardnt/now-python-wsgi)
+1. `"src": "vercel_app/wsgi.py"` tells Vercel that `wsgi.py` contains a WSGI application
+2. `"use": "@ardnt/vercel-python-wsgi"` tells Now to use the `vercel-python-wsgi` builder (you can
+   read more about the builder at https://github.com/ardnt/vercel-python-wsgi)
 3. `"config": { "maxLambdaSize": "15mb" }` ups the limit on the size of the code blob passed to
    lambda (Django is pretty beefy)
 4. `"routes": [ ... ]` tells Now to redirect all requests (`"src": "/(.*)"`) to our WSGI
-   application (`"dest": "now_app/wsgi.py"`)
+   application (`"dest": "vercel_app/wsgi.py"`)
 
 
 #### Add Django to requirements.txt
 
-The `now-python-wsgi` builder will look for a `requirements.txt` file and will
+The `vercel-python-wsgi` builder will look for a `requirements.txt` file and will
 install any dependencies found there, so we need to add one to the project:
 ```
 # requirements.txt
@@ -135,10 +133,10 @@ Django==2.2.4
 First, update allowed hosts in `settings.py` to include `.now.sh`:
 ```python
 # settings.py
-ALLOWED_HOSTS = ['.now.sh']
+ALLOWED_HOSTS = ['.vercel.app']
 ```
 
-Second, get rid of your database configuration since many of the libraries django may attempt to
+Second, get rid of your database configuration since many of the libraries Django may attempt to
 load are not available on lambda (and will create an error when python can't find the missing
 module):
 ```python
@@ -151,10 +149,13 @@ DATABASES = {}
 
 With now installed you can deploy your new application:
 ```
-$ now
-> Deploying now-django-example under jayhale
+$ vercel
+Vercel CLI 21.3.3
+? Set up and deploy “vercel-django-example”? [Y/n] y
 ...
-> Success! Deployment ready [57s]
+? In which directory is your code located? ./
+...
+✅  Production: https://vercel-django-example.vercel.app [copied to clipboard] [29s]
 ```
 
-Check your results by visiting https://zeit.co/dashboard/project/now-django-example
+Check your results in the [Vercel dashboard](https://vercel.com/dashboard).
